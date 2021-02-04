@@ -3,11 +3,11 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 using namespace std;
 
 array<string,7> men {"________\n|/      |\n|\n|\n|\n|\n|","________\n|/     |\n|      O\n|\n|\n|\n|","________\n|/     |\n|      O\n|      |\n|\n|","________\n|/     |\n|      O\n|     \\|\n|      |\n|\n|","________\n|/     |\n|      O\n|     \\|/\n|      |\n|\n|","________\n|/     |\n|      O\n|     \\|/\n|      |\n|     /\n|","________\n|/     |\n|      O\n|     \\|/\n|      |\n|     / \\\n|"};
 array<string,12> words {"soup","antidisestablishmentarianism","india","pakistan","nepal","malaysia","philippines","australia","iran","ethiopia","oman","indonesia"};
-
 string randomWord(){
     return words[rand()%words.size()];
 }
@@ -30,8 +30,9 @@ string displayStr(string word,vector<char> guesses){
 }
 
 int main(){
+    srand(time(0));
     string word = randomWord();
-    int lives = 5;
+    int lives = 6;
     int wrong = 0;
     char guess;
     bool won = false;
@@ -42,14 +43,16 @@ int main(){
         cin >> guess;
         guesses.push_back(guess);
         string guessStr = displayStr(word,guesses);
-        if(!word.find(guess)){
+        if(word.find(guess)==-1){
             wrong++;
-        }else if(!guessStr.find("_")){
+        }else if(guessStr.find('_')==-1){
             cout << "You WON!" << endl;
             won=true;
+            break;
         }
         cout << men[wrong] << endl;
         cout << guessStr << endl;
+        cout << "Guesses left: " << lives-wrong << endl;
     }
     if(!won){
         cout << "You LOST!" << endl;
